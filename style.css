@@ -31,4 +31,5 @@ body {
     position: relative;
     width: 100%;
     display: grid;
+    gap: 0.6em;
 }

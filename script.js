@@ -4,7 +4,7 @@ const startButton = document.getElementById("start");
 const stopButton = document.getElementById("stop");
 const gameContainer = document.querySelector(".game-container");
 const result = document.getElementById("result");
-const cpontrold = document.querySelector(".controls-container");
+const controls = document.querySelector(".controls-container");
 
 let cards;
 let interval;
@@ -50,51 +50,51 @@ const timeGenerator = () => {
 
 // For calculating moves
 const movesCounter = () => {
-    movesCount += 1;
-    moves.innerHTML = `<span>Move:</span>${movesCount}`;
+  movesCount += 1;
+  moves.innerHTML = `<span>Move:</span>${movesCount}`;
 };
 
-// Pick random objetcs from the items array 
+// Pick random objetcs from the items array
 const generateRandom = (size = 4) => {
-    // temporary array
-    let tempArray = [...items];
-    // initialized cardValues array
-    let cardValues = [];
-    // size should be double (4*4 matrix)/2 sincw pairs of objects would exist
-    size = (size * size) / 2;
-    // Random object selection 
-    for (let i=0; i<size; i++) {
-        const randomIndex = Math.floor(Math.random() * tempArray.length);
-        cardValues.push(tempArray[randomIndex]);
-        // once selected remove the object from temp array
-        tempArray.splice(randomIndex, 1);
-    }
-    return cardValues;
+  // temporary array
+  let tempArray = [...items];
+  // initialized cardValues array
+  let cardValues = [];
+  // size should be double (4*4 matrix)/2 sincw pairs of objects would exist
+  size = (size * size) / 2;
+  // Random object selection
+  for (let i = 0; i < size; i++) {
+    const randomIndex = Math.floor(Math.random() * tempArray.length);
+    cardValues.push(tempArray[randomIndex]);
+    // once selected remove the object from temp array
+    tempArray.splice(randomIndex, 1);
+  }
+  return cardValues;
 };
 
 const matrixGenerator = (cardValues, size = 4) => {
-    gameContainer.innerHTML = "";
-    cardValues = [...cardValues, ...cardValues];
-    // simple shuffle
-    cardValues.sort(() => Math.random() - 0.5);
-    for (let i=0; i<size*size; i++){
-        /*  Create cards
+  gameContainer.innerHTML = "";
+  cardValues = [...cardValues, ...cardValues];
+  // simple shuffle
+  cardValues.sort(() => Math.random() - 0.5);
+  for (let i = 0; i < size * size; i++) {
+    /*  Create cards
             before => font size (contains qustion mark)
             after => back side (contains actual image);
             data-card-values is a custom attribute which 
             stores the names of the cards to match later
         */
-       gameContainer.innerHTML += `
+    gameContainer.innerHTML += `
             <div class="card-container" data-card-value="$
-            {cardValue[i].name}">
+            {cardValues[i].name}">
                 <div class="card-before">?</div>
-                <div class="card-after>
+                <div class="card-after">
                 <img src="${cardValues[i].image}"
                 class="image"/></div>
             </div>
             `;
-    }
+  }
 
-    // Grid
-    gameContainer.computedStyleMap.gridTemplateColumns = `repeat`
-}
+  // Grid
+  gameContainer.style.gridTemplateColumns = `repeat(${size}, auto)`;
+};
