@@ -1,3 +1,5 @@
+import { time } from "console";
+
 const moves = document.getElementById("movesCount");
 const timeValue = document.getElementById("time");
 const startButton = document.getElementById("start");
@@ -97,8 +99,7 @@ const matrixGenerator = (cardValues, size = 4) => {
   // Grid
   gameContainer.style.gridTemplateColumns = `repeat(${size}, auto)`;
 
-  
-  // Cards                          
+  // Cards
   cards = document.querySelectorAll(".card-container");
   cards.forEach((card) => {
     card.addEventListener("click", () => {
@@ -106,22 +107,75 @@ const matrixGenerator = (cardValues, size = 4) => {
       run (i,e already matched card when clicked would
       be ignored)
       */
-     if (!card.classList.contains("matched")) {
-      //  flip the clicked card
-      card.classList.add("flipped");
-      //  if it is the first card (!firstCard since
-      // first card is initialy false)
-      if (!firstCard) {
-        firstCard = card;
-        // current cards value become firstCard
-        firstCardValue = card.getAttribute("data-card-value");
-        
-      }
-     } else {
+      if (!card.classList.contains("matched")) {
+        //  flip the clicked card
+        card.classList.add("flipped");
+        //  if it is the first card (!firstCard since
+        // first card is initialy false)
+        if (!firstCard) {
+          firstCard = card;
+          // current cards value become firstCard
+          firstCardValue = card.getAttribute("data-card-value");
+        } else {
+          // increment moves since user selected second card
+          secondCard = card;
+          let secondCardValue = card.getAttribute("data-card-value");
+          if (firstCardValue == secondCardValue) {
+            // if both cards match add matched class so
+            // these cards would beignored next time
+            firstCard.classList.add("matched");
+            secondCard.classList.add("matched");
 
-     }
-    })
+            // set firstCard to false since next card would be first one
+            firstCard = false;
+            // winCound increment as user found a correct match
+            winCount += 1;
+            // check if winCount == half of cardValues
+            if (winCount == Math.floor(cardValues.length / 2)) {
+              result.innerHTML = `<h2>You Won</h2>
+          <h4>Moves: ${movesCount} </h4>`;
+              stopGame();
+            }
+          } else {
+            // if the cards dont match
+            // filp the cards back to normal
+            let [tempFirst, tempSecond] = [firstCard, secondCard];
+            firstCard = false;
+            secondCard = false;
+            let delay = setTimeout(() => {
+              tempFirst.classList.remove("flipped");
+              tempSecond.classList.remove("flipped");
+            }, 900);
+          }
+        }
+      }
+    });
+  });
+};
+
+//  Start game
+startButton.addEventListener("click", () => {
+  movesCount = 0;
+  time = 0;
+  // controls and buttons visibility
+  controls.classList.add("hide");
+  stopButton.classList.remove("hide");
+  startButton.classList.add("hide");
+  // Start timer
+  interval = setInterval(timeGenerator, 1000);
+  // initial moves
+  moves.innerHTML = `<span>Move:</span> ${movesCount}`;
+  initializer();
 });
+
+// Stop game
+startButton.addEventListener("click", (stopGame = () => {
+  controls.classList.remove("hide");
+  stopButton.classList.add("hide");
+  startButton.classList.remove("hide");
+  clearInterval(interval);
+  })
+);
 
 // Initialize values and func calls
 const initializer = () => {
@@ -131,5 +185,3 @@ const initializer = () => {
   console.log(cardValues);
   matrixGenerator(cardValues);
 };
-
-initializer();
