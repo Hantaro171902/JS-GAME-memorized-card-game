@@ -85,16 +85,51 @@ const matrixGenerator = (cardValues, size = 4) => {
             stores the names of the cards to match later
         */
     gameContainer.innerHTML += `
-            <div class="card-container" data-card-value="$
-            {cardValues[i].name}">
-                <div class="card-before">?</div>
-                <div class="card-after">
-                <img src="${cardValues[i].image}"
-                class="image"/></div>
+        <div class="card-container" data-card-value="$
+        {cardValues[i].name}">
+            <div class="card-before">?</div>
+            <div class="card-after">
+            <img src="${cardValues[i].image} "class="image"/>
             </div>
-            `;
+        </div>
+        `;
   }
-
   // Grid
   gameContainer.style.gridTemplateColumns = `repeat(${size}, auto)`;
+
+  
+  // Cards                          
+  cards = document.querySelectorAll(".card-container");
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      /* If selected card is not matched yet then only 
+      run (i,e already matched card when clicked would
+      be ignored)
+      */
+     if (!card.classList.contains("matched")) {
+      //  flip the clicked card
+      card.classList.add("flipped");
+      //  if it is the first card (!firstCard since
+      // first card is initialy false)
+      if (!firstCard) {
+        firstCard = card;
+        // current cards value become firstCard
+        firstCardValue = card.getAttribute("data-card-value");
+        
+      }
+     } else {
+
+     }
+    })
+});
+
+// Initialize values and func calls
+const initializer = () => {
+  result.innerText = "";
+  winCount = 0;
+  let cardValues = generateRandom();
+  console.log(cardValues);
+  matrixGenerator(cardValues);
 };
+
+initializer();
