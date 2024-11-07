@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #f4c531;
+    background-color: #24c048;
 }
 
 .wrapper {
@@ -60,7 +60,7 @@ body {
 }
 
 .card-before {
-    background-color: #f4c531;
+    background-color: #15a24d;
     font-size: 2.8em;
     font-weight: 600;
 }
@@ -86,7 +86,7 @@ body {
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: #f4c531;
+    background-color: #24c048;
     top: 0;
 }
 
